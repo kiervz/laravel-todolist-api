@@ -13,4 +13,9 @@ class TodoListController extends Controller
 
         return response($lists);
     }
+
+    public function show(TodoList $list)
+    {
+        return response($list);
+    }
 }
