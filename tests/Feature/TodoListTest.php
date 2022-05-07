@@ -16,7 +16,7 @@ class TodoListTest extends TestCase
     public function setUp():void
     {
         parent::setUp();
-        $this->list = TodoList::factory()->create();
+        $this->list = TodoList::factory()->create(['name' => 'my list']);
     }
 
     public function test_index_all_todo_list()
@@ -45,5 +45,13 @@ class TodoListTest extends TestCase
 
         $this->assertEquals($list['name'], $response['name']);
         $this->assertDatabaseHas('todo_lists', ['name' => $list['name']]);
+    }
+
+    public function test_delete_todo_list()
+    {
+        $this->deleteJson(route('todo-list.destroy', $this->list->id))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('todo_lists', ['name' => $this->list->name]);
     }
 }
