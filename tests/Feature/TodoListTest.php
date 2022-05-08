@@ -73,4 +73,16 @@ class TodoListTest extends TestCase
         $this->getJson(route('todo-list.getAllTask', $this->list->id))
             ->assertStatus(200);
     }
+
+    public function test_store_task_of_todo_list()
+    {
+        $data = [
+            'todo_list_id' => $this->list->id,
+            'title' => 'Eat hamburger',
+            'is_complete' => 0
+        ];
+
+        $this->postJson(route('todo-list.storeTask'), $data)
+            ->assertCreated();
+    }
 }

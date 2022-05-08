@@ -49,4 +49,16 @@ class TodoListController extends Controller
     {
         return response(new TodoListResource($todo_list));
     }
+
+    public function storeTask(Request $request)
+    {
+        $todo_list = TodoList::findOrFail($request['todo_list_id']);
+
+        $response = $todo_list->tasks()->create([
+            'title' => $request['title'],
+            'is_complete' => $request['is_complete']
+        ]);
+
+        return response($response, Response::HTTP_CREATED);
+    }
 }
