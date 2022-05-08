@@ -67,4 +67,10 @@ class TodoListTest extends TestCase
             'name' => 'updated name'
         ]);
     }
+
+    public function test_fetch_all_task_of_todo_list()
+    {
+        $this->getJson(route('todo-list.getAllTask', $this->list->id))
+            ->assertStatus(200);
+    }
 }
