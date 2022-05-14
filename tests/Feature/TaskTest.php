@@ -36,4 +36,14 @@ class TaskTest extends TestCase
             'title' => $task->title
         ]);
     }
+
+    public function test_update_task_of_todo_list()
+    {
+        $task = $this->createTask();
+
+        $this->putJson(route('task.update', $task->id), ['title' => 'updated task title'])
+            ->assertOk();
+
+        $this->assertDatabaseHas('tasks', ['title' => 'updated task title']);
+    }
 }

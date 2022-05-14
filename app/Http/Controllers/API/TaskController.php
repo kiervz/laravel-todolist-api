@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\TodoList;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class TaskController extends Controller
 {
@@ -22,6 +24,15 @@ class TaskController extends Controller
             'title' => $request['title']
         ]);
 
-        return response(['message' => 'successfully created'], 201);
+        return response(['message' => 'successfully created'], Response::HTTP_CREATED);
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $task->update([
+            'title' => $request['title']
+        ]);
+
+        return response(['message' => 'successfully updated'], Response::HTTP_OK);
     }
 }
