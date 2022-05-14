@@ -16,7 +16,7 @@ class TodoListTest extends TestCase
     public function setUp():void
     {
         parent::setUp();
-        $this->list = TodoList::factory()->create(['name' => 'my list']);
+        $this->list = $this->createTodoList(['name' => 'my list']);
     }
 
     public function test_index_all_todo_list()
@@ -66,23 +66,5 @@ class TodoListTest extends TestCase
             'id' => $this->list->id,
             'name' => 'updated name'
         ]);
-    }
-
-    public function test_fetch_all_task_of_todo_list()
-    {
-        $this->getJson(route('todo-list.getAllTask', $this->list->id))
-            ->assertStatus(200);
-    }
-
-    public function test_store_task_of_todo_list()
-    {
-        $data = [
-            'todo_list_id' => $this->list->id,
-            'title' => 'Eat hamburger',
-            'is_complete' => 0
-        ];
-
-        $this->postJson(route('todo-list.storeTask'), $data)
-            ->assertCreated();
     }
 }
