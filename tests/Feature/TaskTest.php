@@ -46,4 +46,13 @@ class TaskTest extends TestCase
 
         $this->assertDatabaseHas('tasks', ['title' => 'updated task title']);
     }
+
+    public function test_delete_task_of_todo_list()
+    {
+        $task = $this->createTask();
+
+        $this->deleteJson(route('task.destroy', $task->id))->assertNoContent();
+
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+    }
 }
