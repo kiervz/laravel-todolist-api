@@ -15,4 +15,13 @@ class TaskController extends Controller
 
         return response($tasks);
     }
+
+    public function store(Request $request, TodoList $todo_list)
+    {
+        $todo_list->tasks()->create([
+            'title' => $request['title']
+        ]);
+
+        return response(['message' => 'successfully created'], 201);
+    }
 }
