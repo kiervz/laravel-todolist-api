@@ -20,7 +20,6 @@ class LoginUserTest extends TestCase
             'password' => 'password'
         ];
 
-
         $this->postJson(route('auth.login'), $credentials)
             ->assertSuccessful()
             ->assertJsonStructure([
@@ -45,5 +44,23 @@ class LoginUserTest extends TestCase
 
         $this->postJson(route('auth.login'), $credentials)
             ->assertUnauthorized();
+    }
+
+    public function test_user_can_logout()
+    {
+        $user = User::factory()->create();
+
+        $credentials = [
+            'email' => $user['email'],
+            'password' => 'password'
+        ];
+
+        $data = $this->postJson(route('auth.login'), $credentials)
+            ->assertSuccessful()
+            ->json();
+
+        $this->postJson(route('auth.logout'), [], [
+            'Authorization' => "{$data['token_type']} {$data['token']}"
+        ])->assertSuccessful();
     }
 }
