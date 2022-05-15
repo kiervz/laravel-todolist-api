@@ -13,7 +13,7 @@ class LoginUserTest extends TestCase
 
     public function test_user_can_login()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $credentials = [
             'email' => $user['email'],
@@ -41,14 +41,13 @@ class LoginUserTest extends TestCase
             'password' => 'password'
         ];
 
-
         $this->postJson(route('auth.login'), $credentials)
             ->assertUnauthorized();
     }
 
     public function test_user_can_logout()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $credentials = [
             'email' => $user['email'],

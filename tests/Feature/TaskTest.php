@@ -16,6 +16,7 @@ class TaskTest extends TestCase
         $this->authUser();
     }
 
+
     public function test_fetch_all_task_of_todo_list()
     {
         $list = $this->createTodoList();
@@ -26,7 +27,8 @@ class TaskTest extends TestCase
             ->json();
 
         $this->assertEquals($task->title, $response[0]['title']);
-        $this->assertEquals($task->todo_list_id, $response[0]['id']);
+        $this->assertEquals($task->todo_list_id, $response[0]['todo_list_id']);
+        $this->assertEquals(1, count($response));
     }
 
     public function test_store_task_of_todo_list()

@@ -14,7 +14,7 @@ class TodoListController extends Controller
 {
     public function index()
     {
-        $lists = TodoList::all();
+        $lists = TodoList::where('user_id', auth()->user()->id)->get();
 
         return response($lists);
     }
@@ -26,7 +26,10 @@ class TodoListController extends Controller
 
     public function store(TodoListStoreRequest $request)
     {
-        $list = TodoList::create($request->all());
+        $list = TodoList::create([
+            'user_id' => auth()->user()->id,
+            'name' => $request['name']
+        ]);
 
         return response($list, Response::HTTP_CREATED);
     }
