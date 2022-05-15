@@ -9,6 +9,9 @@ class Task extends Model
 {
     use HasFactory;
 
+    public const STATUS_COMPLETE = 1;
+    public const STATUS_NOT_COMPLETE = 0;
+
     protected $fillable = [
         'todo_list_id',
         'title',
