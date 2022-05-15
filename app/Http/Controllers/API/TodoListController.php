@@ -33,6 +33,7 @@ class TodoListController extends Controller
 
     public function destroy(TodoList $todo_list)
     {
+        $todo_list->tasks->each->delete();
         $todo_list->delete();
 
         return response('', Response::HTTP_NO_CONTENT);
@@ -43,22 +44,5 @@ class TodoListController extends Controller
         $todo_list->update($request->all());
 
         return response($todo_list);
-    }
-
-    public function getTasksOfTodoList(TodoList $todo_list)
-    {
-        return response(new TodoListResource($todo_list));
-    }
-
-    public function storeTask(Request $request)
-    {
-        $todo_list = TodoList::findOrFail($request['todo_list_id']);
-
-        $response = $todo_list->tasks()->create([
-            'title' => $request['title'],
-            'is_complete' => $request['is_complete']
-        ]);
-
-        return response($response, Response::HTTP_CREATED);
     }
 }

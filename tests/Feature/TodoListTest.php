@@ -67,4 +67,14 @@ class TodoListTest extends TestCase
             'name' => 'updated name'
         ]);
     }
+
+    public function test_if_todo_list_is_deleted_then_all_its_task_will_be_deleted()
+    {
+        $list = $this->createTodoList();
+        $task = $this->createTask(['todo_list_id' => $list->id]);
+
+        $this->deleteJson(route('todo-list.destroy', $list->id))->assertNoContent();
+
+        $this->assertDatabaseMissing('todo_lists', ['id' => $list->id]);
+    }
 }
