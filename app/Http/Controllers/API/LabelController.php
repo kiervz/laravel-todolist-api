@@ -11,7 +11,9 @@ class LabelController extends Controller
 {
     public function index()
     {
+        $labels = Label::all();
 
+        return response($labels);
     }
 
     public function store(LabelRequest $request)
