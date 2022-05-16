@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\LabelController;
 use App\Http\Controllers\API\TaskController;
 use App\Http\Controllers\API\TodoListController;
 use App\Http\Resources\User\UserResource;
@@ -19,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('todo-list.task', TaskController::class)
         ->except('show')
         ->shallow();
+    Route::apiResource('label', LabelController::class);
 });
 
 Route::post('/register', RegisterController::class)->name('auth.register');
