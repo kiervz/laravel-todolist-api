@@ -27,6 +27,16 @@ class LabelController extends Controller
         return response($label, 201);
     }
 
+    public function update(LabelRequest $request, Label $label)
+    {
+        $label->update([
+            'title' => $request['title'],
+            'color' => $request['color']
+        ]);
+
+        return response($label);
+    }
+
     public function destroy(Label $label)
     {
         $label->delete();

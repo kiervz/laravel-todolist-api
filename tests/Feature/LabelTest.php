@@ -36,6 +36,18 @@ class LabelTest extends TestCase
         $this->assertDatabaseHas('labels', ['title' => $label['title'], 'color' => $label['color']]);
     }
 
+    public function test_user_can_update_label()
+    {
+        $label = $this->createLabel();
+
+        $this->putJson(route('label.update', $label->id), [
+            'title' => 'test',
+            'color' => 'light blue'
+        ])->assertOk();
+
+        $this->assertDatabaseHas('labels', ['title' => 'test', 'color' => 'light blue']);
+    }
+
     public function test_user_can_delete_label()
     {
         $label = $this->createLabel();
