@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Label\LabelRequest;
 use App\Models\Label;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LabelController extends Controller
 {
@@ -24,5 +25,14 @@ class LabelController extends Controller
         ]);
 
         return response($label, 201);
+    }
+
+    public function destroy(Label $label)
+    {
+        $label->delete();
+
+        return response([
+            'message' => 'successfully deleted'
+        ], Response::HTTP_NO_CONTENT);
     }
 }

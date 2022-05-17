@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Label;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -13,7 +14,7 @@ class LabelTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $user = $this->authUser();
+        $this->authUser();
     }
 
     public function test_fetch_all_label()
@@ -28,12 +29,19 @@ class LabelTest extends TestCase
 
     public function test_user_can_create_label()
     {
-        $this->authUser();
-        $this->postJson(route('label.store'), [
-            'title' => 'sample label title',
-            'color' => 'red'
-        ])->assertCreated();
+        $label = Label::factory()->raw();
 
-        $this->assertDatabaseHas('labels', ['title' => 'sample label title']);
+        $this->postJson(route('label.store'), $label)->assertCreated();
+
+        $this->assertDatabaseHas('labels', ['title' => $label['title'], 'color' => $label['color']]);
+    }
+
+    public function test_user_can_delete_label()
+    {
+        $label = $this->createLabel();
+
+        $this->deleteJson(route('label.destroy', $label->id))->assertNoContent();
+
+        $this->assertDatabaseMissing('labels', ['id' => $label->id]);
     }
 }
