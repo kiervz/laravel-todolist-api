@@ -21,6 +21,7 @@ class TaskController extends Controller
     public function store(Request $request, TodoList $todo_list)
     {
         $todo_list->tasks()->create([
+            'label_id' => $request['label_id'],
             'title' => $request['title']
         ]);
 

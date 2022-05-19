@@ -63,4 +63,38 @@ class TaskTest extends TestCase
 
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
     }
+
+    public function test_store_task_with_label()
+    {
+        $list = $this->createTodoList();
+        $task = $this->createTask();
+        $label = $this->createLabel();
+
+        $this->postJson(route('todo-list.task.store', $list['id']), [
+            'label_id' => $label['id'],
+            'title' => $task['title']
+        ])->assertCreated();
+
+        $this->assertDatabaseHas('tasks', [
+            'title' => $task['title'],
+            'todo_list_id' => $list['id'],
+            'label_id' => $label['id']
+        ]);
+    }
+
+    public function test_if_can_store_task_without_label()
+    {
+        $list = $this->createTodoList();
+        $task = $this->createTask();
+
+        $this->postJson(route('todo-list.task.store', $list['id']), [
+            'title' => $task['title']
+        ])->assertCreated();
+
+        $this->assertDatabaseHas('tasks', [
+            'title' => $task['title'],
+            'todo_list_id' => $list['id'],
+            'label_id' => null
+        ]);
+    }
 }
