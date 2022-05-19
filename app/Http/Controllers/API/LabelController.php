@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Label\LabelRequest;
+use App\Http\Requests\Label\LabelStoreRequest;
+use App\Http\Requests\Label\LabelUpdateRequest;
 use App\Models\Label;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,7 +18,7 @@ class LabelController extends Controller
         return response($labels);
     }
 
-    public function store(LabelRequest $request)
+    public function store(LabelStoreRequest $request)
     {
         $label = Label::create([
             'title' => $request['title'],
@@ -27,7 +28,7 @@ class LabelController extends Controller
         return response($label, 201);
     }
 
-    public function update(LabelRequest $request, Label $label)
+    public function update(LabelUpdateRequest $request, Label $label)
     {
         $label->update([
             'title' => $request['title'],

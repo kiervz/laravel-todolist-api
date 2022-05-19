@@ -4,7 +4,7 @@ namespace App\Http\Requests\Label;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LabelRequest extends FormRequest
+class LabelStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
