@@ -17,12 +17,12 @@ class TodoListController extends Controller
     {
         $lists = TodoList::where('user_id', auth()->user()->id)->paginate(10);
 
-        return response(new TodoListCollection($lists));
+        return response(new TodoListCollection($lists), Response::HTTP_OK);
     }
 
     public function show(TodoList $todo_list)
     {
-        return response($todo_list, Response::HTTP_OK);
+        return response(new TodoListResource($todo_list), Response::HTTP_OK);
     }
 
     public function store(TodoListStoreRequest $request)
@@ -32,7 +32,7 @@ class TodoListController extends Controller
             'name' => $request['name']
         ]);
 
-        return response($list, Response::HTTP_CREATED);
+        return response(new TodoListResource($list), Response::HTTP_CREATED);
     }
 
     public function destroy(TodoList $todo_list)
@@ -40,13 +40,13 @@ class TodoListController extends Controller
         $todo_list->tasks->each->delete();
         $todo_list->delete();
 
-        return response('', Response::HTTP_NO_CONTENT);
+        return response(['message' => 'successfully deleted'], Response::HTTP_NO_CONTENT);
     }
 
     public function update(TodoListUpdateRequest $request, TodoList $todo_list)
     {
         $todo_list->update($request->all());
 
-        return response($todo_list);
+        return response(new TodoListResource($todo_list), Response::HTTP_OK);
     }
 }

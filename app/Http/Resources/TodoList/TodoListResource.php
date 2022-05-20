@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\TodoList;
 
+use App\Http\Resources\Task\TaskResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TodoListResource extends JsonResource
