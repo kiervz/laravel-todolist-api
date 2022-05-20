@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources\TodoList;
+namespace App\Http\Resources\Task;
 
+use App\Http\Resources\Label\LabelResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskResource extends JsonResource
@@ -16,6 +17,7 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'label' => new LabelResource($this->label),
             'title' => $this->title,
             'is_complete' => $this->is_complete
         ];

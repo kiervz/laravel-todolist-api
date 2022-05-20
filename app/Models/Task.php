@@ -23,4 +23,9 @@ class Task extends Model
     {
         return $this->belongsTo(TodoList::class);
     }
+
+    public function label()
+    {
+        return $this->hasOne(Label::class, 'id', 'label_id');
+    }
 }

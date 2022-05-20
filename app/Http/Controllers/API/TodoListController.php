@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TodoList\TodoListStoreRequest;
 use App\Http\Requests\TodoList\TodoListUpdateRequest;
+use App\Http\Resources\TodoList\TodoListCollection;
 use App\Http\Resources\TodoList\TodoListResource;
 use App\Models\TodoList;
 use Illuminate\Http\Request;
@@ -14,9 +15,9 @@ class TodoListController extends Controller
 {
     public function index()
     {
-        $lists = TodoList::where('user_id', auth()->user()->id)->get();
+        $lists = TodoList::where('user_id', auth()->user()->id)->paginate(10);
 
-        return response($lists);
+        return response(new TodoListCollection($lists));
     }
 
     public function show(TodoList $todo_list)
@@ -26,7 +27,10 @@ class TodoListController extends Controller
 
     public function store(TodoListStoreRequest $request)
     {
-        $list = TodoList::create($request->validated());
+        $list = TodoList::create([
+            'user_id' => auth()->user()->id,
+            'name' => $request['name']
+        ]);
 
         return response($list, Response::HTTP_CREATED);
     }

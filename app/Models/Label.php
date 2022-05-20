@@ -13,4 +13,9 @@ class Label extends Model
         'title',
         'color'
     ];
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }
