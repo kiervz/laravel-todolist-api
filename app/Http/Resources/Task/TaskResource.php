@@ -17,8 +17,8 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'label' => new LabelResource($this->label),
             'title' => $this->title,
+            'label' => new LabelResource($this->label),
             'is_complete' => $this->is_complete
         ];
     }

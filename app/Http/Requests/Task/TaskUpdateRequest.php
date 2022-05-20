@@ -24,7 +24,6 @@ class TaskUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'todo_list_id' => 'sometimes',
             'label_id' => 'sometimes',
             'title' => 'required',
             'is_complete' => 'sometimes'
