@@ -1,19 +1,27 @@
 <?php
 
+use App\Http\Controllers\API\Auth\LoginController;
+use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\LabelController;
+use App\Http\Controllers\API\TaskController;
+use App\Http\Controllers\API\TodoListController;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', function (Request $request) {
+        return new UserResource($request->user());
+    });
+    Route::post('/logout', [LoginController::class, 'logout'])->name('auth.logout');
+
+    Route::apiResource('todo-list', TodoListController::class);
+    Route::apiResource('todo-list.task', TaskController::class)
+        ->except('show')
+        ->shallow();
+    Route::apiResource('label', LabelController::class);
 });
+
+Route::post('/register', RegisterController::class)->name('auth.register');
+Route::post('/login', [LoginController::class, 'login'])->name('auth.login');
