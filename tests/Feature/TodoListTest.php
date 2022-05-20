@@ -28,7 +28,7 @@ class TodoListTest extends TestCase
         $this->createTodoList();
         $response = $this->getJson(route('todo-list.index'))->json();
 
-        $this->assertEquals(1, count($response));
+        $this->assertEquals(1, count($response['data']));
     }
 
     public function test_fetch_single_todo_list()
