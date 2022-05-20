@@ -20,20 +20,14 @@ class LabelController extends Controller
 
     public function store(LabelStoreRequest $request)
     {
-        $label = Label::create([
-            'title' => $request['title'],
-            'color' => $request['color']
-        ]);
+        $label = Label::create($request->validated());
 
         return response($label, 201);
     }
 
     public function update(LabelUpdateRequest $request, Label $label)
     {
-        $label->update([
-            'title' => $request['title'],
-            'color' => $request['color']
-        ]);
+        $label->update($request->validated());
 
         return response($label);
     }

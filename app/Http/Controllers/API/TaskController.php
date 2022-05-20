@@ -22,20 +22,14 @@ class TaskController extends Controller
 
     public function store(TaskStoreRequest $request, TodoList $todo_list)
     {
-        $todo_list->tasks()->create([
-            'label_id' => $request['label_id'],
-            'title' => $request['title']
-        ]);
+        $todo_list->tasks()->create($request->validated());
 
         return response(['message' => 'successfully created'], Response::HTTP_CREATED);
     }
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
-        $task->update([
-            'label_id' => $request['label_id'],
-            'title' => $request['title']
-        ]);
+        $task->update($request->validated());
 
         return response(['message' => 'successfully updated'], Response::HTTP_OK);
     }

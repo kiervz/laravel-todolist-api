@@ -21,7 +21,10 @@ class TaskStatusTest extends TestCase
     {
         $task = $this->createTask();
 
-        $this->putJson(route('task.update', $task->id), ['is_complete' => Task::STATUS_COMPLETE]);
+        $this->putJson(route('task.update', $task->id), [
+            'title' => $task['title'],
+            'is_complete' => Task::STATUS_COMPLETE
+        ]);
 
         $this->assertDatabaseHas('tasks', ['is_complete' => Task::STATUS_COMPLETE]);
     }
