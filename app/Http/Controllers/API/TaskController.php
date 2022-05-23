@@ -18,27 +18,38 @@ class TaskController extends Controller
     {
         $tasks = $todo_list->tasks;
 
-        return response(TaskResource::collection($tasks), Response::HTTP_OK);
+        return $this->customResponse('result', TaskResource::collection($tasks), Response::HTTP_OK);
     }
 
     public function store(TaskStoreRequest $request, TodoList $todo_list)
     {
-        $todo_list->tasks()->create($request->validated());
+        $statusCode = Response::HTTP_CREATED;
+        $message = 'Task created successfully';
 
-        return response(['message' => 'task successfully created'], Response::HTTP_CREATED);
+        $task = $todo_list->tasks()->create($request->validated());
+        $data = new TaskResource($task);
+
+        return $this->customResponse($message, $data, $statusCode);
     }
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
-        $task->update($request->validated());
+        $statusCode = Response::HTTP_OK;
+        $message = 'Task updated successfully';
 
-        return response(new TaskResource($task), Response::HTTP_OK);
+        $task->update($request->validated());
+        $data = new TaskResource($task);
+
+        return $this->customResponse($message, $data, $statusCode);
     }
 
     public function destroy(Task $task)
     {
+        $statusCode = Response::HTTP_NO_CONTENT;
+        $message = 'Task deleted successfully';
+
         $task->delete();
 
-        return response(['message' => 'task successfully deleted'], Response::HTTP_NO_CONTENT);
+        return $this->customResponse($message, '', $statusCode);
     }
 }
