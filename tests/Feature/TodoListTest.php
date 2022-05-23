@@ -28,7 +28,7 @@ class TodoListTest extends TestCase
         $this->createTodoList();
         $response = $this->getJson(route('todo-list.index'))->json();
 
-        $this->assertEquals(1, count($response['data']));
+        $this->assertEquals(1, count($response['response']['data']));
     }
 
     public function test_fetch_single_todo_list()
@@ -37,7 +37,7 @@ class TodoListTest extends TestCase
                     ->assertOk()
                     ->json();
 
-        $this->assertEquals($response['name'], $this->list->name);
+        $this->assertEquals($response['response']['name'], $this->list->name);
     }
 
     public function test_store_todo_list()
@@ -50,7 +50,7 @@ class TodoListTest extends TestCase
         ])->assertCreated()
         ->json();
 
-        $this->assertEquals($list['name'], $response['name']);
+        $this->assertEquals($list['name'], $response['response']['name']);
         $this->assertDatabaseHas('todo_lists', ['name' => $list['name']]);
     }
 
@@ -78,7 +78,7 @@ class TodoListTest extends TestCase
     public function test_if_todo_list_is_deleted_then_all_its_task_will_be_deleted()
     {
         $list = $this->createTodoList();
-        $task = $this->createTask(['todo_list_id' => $list->id]);
+        $this->createTask(['todo_list_id' => $list->id]);
 
         $this->deleteJson(route('todo-list.destroy', $list->id))->assertNoContent();
 
