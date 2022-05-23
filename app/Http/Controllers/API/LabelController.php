@@ -16,29 +16,38 @@ class LabelController extends Controller
     {
         $labels = Label::get();
 
-        return response(LabelResource::collection($labels), Response::HTTP_OK);
+        return $this->customResponse('result', LabelResource::collection($labels), Response::HTTP_OK);
     }
 
     public function store(LabelStoreRequest $request)
     {
-        $label = Label::create($request->validated());
+        $statusCode = Response::HTTP_CREATED;
+        $message = 'Label created successfully';
 
-        return response(new LabelResource($label), Response::HTTP_CREATED);
+        $label = Label::create($request->validated());
+        $data = new LabelResource($label);
+
+        return $this->customResponse($message, $data, $statusCode);
     }
 
     public function update(LabelUpdateRequest $request, Label $label)
     {
-        $label->update($request->validated());
+        $statusCode = Response::HTTP_OK;
+        $message = 'Label updated successfully';
 
-        return response(new LabelResource($label), Response::HTTP_OK);
+        $label->update($request->validated());
+        $data = new LabelResource($label);
+
+        return $this->customResponse($message, $data, $statusCode);
     }
 
     public function destroy(Label $label)
     {
+        $statusCode = Response::HTTP_NO_CONTENT;
+        $message = 'Label deleted successfully';
+
         $label->delete();
 
-        return response([
-            'message' => 'successfully deleted'
-        ], Response::HTTP_NO_CONTENT);
+        return $this->customResponse($message, '', $statusCode);
     }
 }
