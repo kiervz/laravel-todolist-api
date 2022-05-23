@@ -17,36 +17,52 @@ class TodoListController extends Controller
     {
         $lists = TodoList::where('user_id', auth()->user()->id)->paginate(10);
 
-        return response(new TodoListCollection($lists), Response::HTTP_OK);
+        return $this->customResponse('result', new TodoListCollection($lists), Response::HTTP_OK);
     }
 
     public function show(TodoList $todo_list)
     {
-        return response(new TodoListResource($todo_list), Response::HTTP_OK);
+        $statusCode = Response::HTTP_OK;
+        $message = 'Todo List fetched successfully';
+        $data = new TodoListResource($todo_list);
+
+        return $this->customResponse($message, $data, $statusCode);
     }
 
     public function store(TodoListStoreRequest $request)
     {
+        $statusCode = Response::HTTP_CREATED;
+        $message = 'Todo List created successfully';
+
         $list = TodoList::create([
             'user_id' => auth()->user()->id,
             'name' => $request['name']
         ]);
 
-        return response(new TodoListResource($list), Response::HTTP_CREATED);
+        $data = new TodoListResource($list);
+
+        return $this->customResponse($message, $data, $statusCode);
     }
 
     public function destroy(TodoList $todo_list)
     {
+        $statusCode = Response::HTTP_NO_CONTENT;
+        $message = 'Todo List deleted successfully';
+
         $todo_list->tasks->each->delete();
         $todo_list->delete();
 
-        return response(['message' => 'successfully deleted'], Response::HTTP_NO_CONTENT);
+        return $this->customResponse($message, '', $statusCode);
     }
 
     public function update(TodoListUpdateRequest $request, TodoList $todo_list)
     {
-        $todo_list->update($request->all());
+        $statusCode = Response::HTTP_OK;
+        $message = 'Todo List updated successfully';
 
-        return response(new TodoListResource($todo_list), Response::HTTP_OK);
+        $todo_list->update($request->all());
+        $data = new TodoListResource($todo_list);
+
+        return $this->customResponse($message, $data, $statusCode);
     }
 }
