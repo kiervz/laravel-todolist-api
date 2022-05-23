@@ -20,7 +20,7 @@ class TaskResource extends JsonResource
             'todo_list_id' => $this->todo_list_id,
             'title' => $this->title,
             'label' => new LabelResource($this->label),
-            'is_complete' => $this->is_complete
+            'is_complete' => $this->is_complete ?? 0
         ];
     }
 }
