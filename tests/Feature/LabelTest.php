@@ -24,7 +24,7 @@ class LabelTest extends TestCase
             ->assertOk()
             ->json();
 
-        $this->assertEquals(1, count($response));
+        $this->assertEquals(1, count($response['response']));
     }
 
     public function test_user_can_create_label()
